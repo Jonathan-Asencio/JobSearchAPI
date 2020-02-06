@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>putavettoworkAPI</name>
+    </assembly>
+    <members>
+        <member name="M:putavettoworkAPI.Controllers.NationalParkV2Controller.GetNationalPark(System.Int32)">
+            <summary>
+            Get list of national park
+            </summary>
+            <param name="nationalParkId"> The ID of the National Park </param>
+            <returns></returns>
+        </member>
+        <member name="M:putavettoworkAPI.Controllers.TrailsController.GetTrail(System.Int32)">
+            <summary>
+            Get list of trail
+            </summary>
+            <param name="TrailId"> The ID of the trail </param>
+            <returns></returns>
+        </member>
+        <member name="M:putavettoworkAPI.Controllers.TrailsController.GetTrailInNationalPark(System.Int32)">
+            <summary>
+            attribute routing example
+            </summary>
+            <param name="nationalParkId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
