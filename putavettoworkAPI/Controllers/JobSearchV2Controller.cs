@@ -12,28 +12,28 @@ using putavettoworkAPI.Repository.iRepository;
 //demo of version control
 namespace putavettoworkAPI.Controllers
 {
-    [Route("api/v/{version:apiVersion}/nationalParks")]
+    [Route("api/v/{version:apiVersion}/jobSearch")]
     [ApiVersion("2.0")]
     //[Route("api/[controller]")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class JobSearchController : ControllerBase
     {
-        private iNationalParkRepository _npRepo;
+        private iJobSearchRepository _jsRepo;
         private readonly IMapper _mapper;
 
-        public JobSearchController(iNationalParkRepository npRepo, IMapper mapper)
+        public JobSearchController(iJobSearchRepository jsRepo, IMapper mapper)
         {
-            _npRepo = npRepo;
+            _jsRepo = jsRepo;
             _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<JobSearchDto>))]
         [ProducesResponseType(400)]
-        public IActionResult GetNationalParks() 
+        public IActionResult GetJobSearch() 
         {
-            var objList = _npRepo.GetNationalParks();
+            var objList = _jsRepo.GetJobSearch();
 
             var objDto = new List<JobSearchDto>();
 

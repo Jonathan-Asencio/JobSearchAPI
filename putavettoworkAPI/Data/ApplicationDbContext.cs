@@ -14,7 +14,7 @@ namespace putavettoworkAPI.Data
 
         }
 
-        public DbSet<JobSearch> NationalParks { get; set; }
-        public DbSet<Trail> Trails { get; set; }
+        public DbSet<JobSearch> JobSearch { get; set; }
+        public DbSet<Jobs> Jobs { get; set; }
     }
 }

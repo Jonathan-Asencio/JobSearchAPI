@@ -36,8 +36,8 @@ namespace putavettoworkAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<Data.ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<iNationalParkRepository, NationalParkRepository>();
-            services.AddScoped<iTrailRepository, TrailRepository>();
+            services.AddScoped<iJobSearchRepository, JobSearchRepository>();
+            services.AddScoped<iJobsRepository, JobsRepository>();
             services.AddAutoMapper(typeof(Mappings));
             services.AddApiVersioning(options =>
             {

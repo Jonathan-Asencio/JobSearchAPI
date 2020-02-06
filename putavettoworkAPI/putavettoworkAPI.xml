@@ -4,25 +4,25 @@
         <name>putavettoworkAPI</name>
     </assembly>
     <members>
-        <member name="M:putavettoworkAPI.Controllers.NationalParkV2Controller.GetNationalPark(System.Int32)">
-            <summary>
-            Get list of national park
-            </summary>
-            <param name="nationalParkId"> The ID of the National Park </param>
-            <returns></returns>
-        </member>
-        <member name="M:putavettoworkAPI.Controllers.TrailsController.GetTrail(System.Int32)">
+        <member name="M:putavettoworkAPI.Controllers.JobsController.GetJob(System.Int32)">
             <summary>
             Get list of trail
             </summary>
-            <param name="TrailId"> The ID of the trail </param>
+            <param name="JobId"> The ID of the trail </param>
             <returns></returns>
         </member>
-        <member name="M:putavettoworkAPI.Controllers.TrailsController.GetTrailInNationalPark(System.Int32)">
+        <member name="M:putavettoworkAPI.Controllers.JobsController.GetJobInJobSearch(System.Int32)">
             <summary>
             attribute routing example
             </summary>
-            <param name="nationalParkId"></param>
+            <param name="jobSearchId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:putavettoworkAPI.Controllers.JobSearchV2Controller.GetJobSearch(System.Int32)">
+            <summary>
+            Get list of jobs
+            </summary>
+            <param name="jobSearchId"> The ID of the Job </param>
             <returns></returns>
         </member>
     </members>

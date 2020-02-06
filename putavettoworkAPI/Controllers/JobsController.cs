@@ -12,34 +12,34 @@ using putavettoworkAPI.Repository.iRepository;
 
 namespace putavettoworkAPI.Controllers
 {
-    [Route("api/v/{version:apiVersion}/Trails")]
-    //[Route("api/Trails")]
+    [Route("api/v/{version:apiVersion}/jobs")]
+    //[Route("api/Jobs")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "putavettoworkOpenAPISpec")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class TrailsController : ControllerBase
+    public class JobsController : ControllerBase
     {
-        private iTrailRepository _trailRepo;
+        private iJobsRepository _jsRepo;
         private readonly IMapper _mapper;
 
-        public TrailsController(iTrailRepository trailRepo, IMapper mapper)
+        public JobsController(iJobsRepository jsRepo, IMapper mapper)
         {
-            _trailRepo = trailRepo;
+            _jsRepo = jsRepo;
             _mapper = mapper;
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<TrailDto>))]
+        [ProducesResponseType(200, Type = typeof(List<JobDto>))]
         [ProducesResponseType(400)]
-        public IActionResult GetTrails() 
+        public IActionResult GetJob() 
         {
-            var objList = _trailRepo.GetTrails();
+            var objList = _jsRepo.GetJobs();
 
-            var objDto = new List<TrailDto>();
+            var objDto = new List<JobDto>();
 
             foreach(var obj in objList)
             {
-                objDto.Add(_mapper.Map<TrailDto>(obj));
+                objDto.Add(_mapper.Map<JobDto>(obj));
             }
 
             return Ok(objDto);
@@ -48,116 +48,116 @@ namespace putavettoworkAPI.Controllers
         /// <summary>
         /// Get list of trail
         /// </summary>
-        /// <param name="TrailId"> The ID of the trail </param>
+        /// <param name="JobId"> The ID of the trail </param>
         /// <returns></returns>
         //get request with required arguments
-        [HttpGet("{TrailId:int}", Name = "GetTrail") ]
-        [ProducesResponseType(200, Type = typeof(TrailDto))]
+        [HttpGet("{JobId:int}", Name = "GetJob") ]
+        [ProducesResponseType(200, Type = typeof(JobDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public IActionResult GetTrail(int TrailId) 
+        public IActionResult GetJob(int JobId) 
         {
-            var obj = _trailRepo.GetTrail(TrailId);
+            var obj = _jsRepo.GetJob(JobId);
             if (obj == null) 
             {
                 return NotFound();
             }
-            var objDto = _mapper.Map<TrailDto>(obj);
+            var objDto = _mapper.Map<JobDto>(obj);
             return Ok(objDto);
 
         }
         /// <summary>
         /// attribute routing example
         /// </summary>
-        /// <param name="nationalParkId"></param>
+        /// <param name="jobSearchId"></param>
         /// <returns></returns>
-        [HttpGet("[action]/{TrailId:int}")]
-        [ProducesResponseType(200, Type = typeof(TrailDto))]
+        [HttpGet("[action]/{JobId:int}")]
+        [ProducesResponseType(200, Type = typeof(JobDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public IActionResult GetTrailInNationalPark(int nationalParkId)
+        public IActionResult GetJobInJobSearch(int jobSearchId)
         {
-            var objList = _trailRepo.GetTrailsInNationalPark(nationalParkId);
+            var objList = _jsRepo.GetJobsInJobSearch(jobSearchId);
             if (objList == null)
             {
                 return NotFound();
             }
-            var objDto = new List<TrailDto>();
+            var objDto = new List<JobDto>();
             foreach (var obj in objList)
             {
-                objDto.Add(_mapper.Map<TrailDto>(obj));
+                objDto.Add(_mapper.Map<JobDto>(obj));
             }
             return Ok(objDto);
 
         }
 
         [HttpPost]
-        [ProducesResponseType(201, Type = typeof(TrailDto))]
+        [ProducesResponseType(201, Type = typeof(JobDto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateTrail([FromBody] TrailCreateDto TrailDto) 
+        public IActionResult CreateJob([FromBody] JobCreateDto JobDto) 
         {
-            if (TrailDto == null) 
+            if (JobDto == null) 
             {
                 return BadRequest(ModelState);
             }
 
-            if (_trailRepo.TrailExists(TrailDto.Name)) 
+            if (_jsRepo.JobExists(JobDto.Name)) 
             {
                 ModelState.AddModelError("", "trail Exists!");
                 return StatusCode(404, ModelState);
             }
 
-            var TrailObj = _mapper.Map<Trail>(TrailDto);
+            var JobObj = _mapper.Map<Jobs>(JobDto);
 
-            if (!_trailRepo.CreateTrail(TrailObj)) 
+            if (!_jsRepo.CreateJob(JobObj)) 
             {
-                ModelState.AddModelError("", $"Something went wrong when saving the record {TrailObj.Name}");
+                ModelState.AddModelError("", $"Something went wrong when saving the record {JobObj.Name}");
                 return StatusCode(500, ModelState);
 
             }
-            return CreatedAtRoute("GetTrail", new {TrailId = TrailObj.Id, TrailObj});
+            return CreatedAtRoute("GetJob", new {JobId = JobObj.Id, JobObj});
         }
 
-        [HttpPatch("{TrailId:int}", Name = "UpdateTrail")]
+        [HttpPatch("{JobId:int}", Name = "UpdateJob")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdateTrail(int TrailId, [FromBody] TrailUpdateDto TrailDto) 
+        public IActionResult UpdateJob(int JobId, [FromBody] JobUpdateDto JobDto) 
         {
-            if (TrailDto == null || TrailId != TrailDto.Id)
+            if (JobDto == null || JobId != JobDto.Id)
             {
                 return BadRequest(ModelState);
             }
 
-            var TrailObj = _mapper.Map<Trail>(TrailDto);
+            var JobObj = _mapper.Map<Jobs>(JobDto);
 
-            if (!_trailRepo.UpdateTrail(TrailObj))
+            if (!_jsRepo.UpdateJob(JobObj))
             {
-                ModelState.AddModelError("", $"Something went wrong when updating the record {TrailObj.Name}");
+                ModelState.AddModelError("", $"Something went wrong when updating the record {JobObj.Name}");
                 return StatusCode(500, ModelState);
 
             }
             return NoContent();  
         }
 
-        [HttpDelete("{TrailId:int}", Name = "DeleteTrail")]
+        [HttpDelete("{JobId:int}", Name = "DeleteJob")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DeleteTrail(int TrailId)
+        public IActionResult DeleteJob(int JobId)
         {
-            if (_trailRepo.TrailExists(TrailId))
+            if (_jsRepo.JobExists(JobId))
             {
                 return NotFound();
             }
 
-            var TrailObj = _trailRepo.GetTrail(TrailId);
-            if (!_trailRepo.DeleteTrail(TrailObj))
+            var JobObj = _jsRepo.GetJob(JobId);
+            if (!_jsRepo.DeleteJob(JobObj))
             {
-                ModelState.AddModelError("", $"Something went wrong when deleting the record {TrailObj.Name}");
+                ModelState.AddModelError("", $"Something went wrong when deleting the record {JobObj.Name}");
                 return StatusCode(500, ModelState);
 
             }

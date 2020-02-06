@@ -11,28 +11,28 @@ using putavettoworkAPI.Repository.iRepository;
 
 namespace putavettoworkAPI.Controllers
 {
-    [Route("api/v/{version:apiVersion}/nationalParks")]
+    [Route("api/v/{version:apiVersion}/jobSearch")]
     //[Route("api/[controller]")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "putavettoworkOpenAPISpec")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class JobSearchV2Controller : ControllerBase
     {
-        private iNationalParkRepository _npRepo;
+        private iJobSearchRepository _jsRepo;
         private readonly IMapper _mapper;
 
-        public JobSearchV2Controller(iNationalParkRepository npRepo, IMapper mapper)
+        public JobSearchV2Controller(iJobSearchRepository jsRepo, IMapper mapper)
         {
-            _npRepo = npRepo;
+            _jsRepo = jsRepo;
             _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<JobSearchDto>))]
         [ProducesResponseType(400)]
-        public IActionResult GetNationalParks() 
+        public IActionResult GetJobSearchs() 
         {
-            var objList = _npRepo.GetNationalParks();
+            var objList = _jsRepo.GetJobSearch();
 
             var objDto = new List<JobSearchDto>();
 
@@ -45,18 +45,18 @@ namespace putavettoworkAPI.Controllers
         }
 
         /// <summary>
-        /// Get list of national park
+        /// Get list of jobs
         /// </summary>
-        /// <param name="nationalParkId"> The ID of the National Park </param>
+        /// <param name="jobSearchId"> The ID of the Job </param>
         /// <returns></returns>
         //get request with required arguments
-        [HttpGet("{nationalParkId:int}", Name = "GetNationalPark") ]
+        [HttpGet("{jobSearchId:int}", Name = "GetJobSearch") ]
         [ProducesResponseType(200, Type = typeof(JobSearchDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public IActionResult GetNationalPark(int nationalParkId) 
+        public IActionResult GetJobSearch(int jobSearchId) 
         {
-            var obj = _npRepo.GetNationalPark(nationalParkId);
+            var obj = _jsRepo.GetJobSearch(jobSearchId);
             if (obj == null) 
             {
                 return NotFound();
@@ -71,68 +71,68 @@ namespace putavettoworkAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateNationalPark([FromBody] JobSearchDto nationalParkDto) 
+        public IActionResult CreateJobSearch([FromBody] JobSearchDto jobSearchDto) 
         {
-            if (nationalParkDto == null) 
+            if (jobSearchDto == null) 
             {
                 return BadRequest(ModelState);
             }
 
-            if (_npRepo.NationalParkExists(nationalParkDto.Name)) 
+            if (_jsRepo.JobSearchExists(jobSearchDto.Name)) 
             {
-                ModelState.AddModelError("", "National Park Exists!");
+                ModelState.AddModelError("", "Job Exists!");
                 return StatusCode(404, ModelState);
             }
 
-            var nationalParkObj = _mapper.Map<JobSearch>(nationalParkDto);
+            var jobSearchObj = _mapper.Map<JobSearch>(jobSearchDto);
 
-            if (!_npRepo.CreateNationalPark(nationalParkObj)) 
+            if (!_jsRepo.CreateJobSearch(jobSearchObj)) 
             {
-                ModelState.AddModelError("", $"Something went wrong when saving the record {nationalParkObj.Name}");
+                ModelState.AddModelError("", $"Something went wrong when saving the record {jobSearchObj.Name}");
                 return StatusCode(500, ModelState);
 
             }
-            return CreatedAtRoute("GetNationalPark", new {nationalParkId = nationalParkObj.Id, nationalParkObj});
+            return CreatedAtRoute("GetJobSearch", new {jobSearchId = jobSearchObj.Id, jobSearchObj});
         }
 
-        [HttpPatch("{nationalParkId:int}", Name = "UpdateNationalPark")]
+        [HttpPatch("{jobSearchId:int}", Name = "UpdateJobSearch")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdateNationalPark(int nationalParkId, [FromBody] JobSearchDto nationalParkDto) 
+        public IActionResult UpdateJobSearch(int jobSearchId, [FromBody] JobSearchDto jobSearchDto) 
         {
-            if (nationalParkDto == null || nationalParkId != nationalParkDto.Id)
+            if (jobSearchDto == null || jobSearchId != jobSearchDto.Id)
             {
                 return BadRequest(ModelState);
             }
 
-            var nationalParkObj = _mapper.Map<JobSearch>(nationalParkDto);
+            var jobSearchObj = _mapper.Map<JobSearch>(jobSearchDto);
 
-            if (!_npRepo.UpdateNationalPark(nationalParkObj))
+            if (!_jsRepo.UpdateJobSearch(jobSearchObj))
             {
-                ModelState.AddModelError("", $"Something went wrong when updating the record {nationalParkObj.Name}");
+                ModelState.AddModelError("", $"Something went wrong when updating the record {jobSearchObj.Name}");
                 return StatusCode(500, ModelState);
 
             }
             return NoContent();  
         }
 
-        [HttpDelete("{nationalParkId:int}", Name = "DeleteNationalPark")]
+        [HttpDelete("{jobSearchId:int}", Name = "DeleteJobSearch")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DeleteNationalPark(int nationalParkId)
+        public IActionResult DeleteJobSearch(int jobSearchId)
         {
-            if (_npRepo.NationalParkExists(nationalParkId))
+            if (_jsRepo.JobSearchExists(jobSearchId))
             {
                 return NotFound();
             }
 
-            var nationalParkObj = _npRepo.GetNationalPark(nationalParkId);
-            if (!_npRepo.DeleteNationalPark(nationalParkObj))
+            var jobSearchObj = _jsRepo.GetJobSearch(jobSearchId);
+            if (!_jsRepo.DeleteJobSearch(jobSearchObj))
             {
-                ModelState.AddModelError("", $"Something went wrong when deleting the record {nationalParkObj.Name}");
+                ModelState.AddModelError("", $"Something went wrong when deleting the record {jobSearchObj.Name}");
                 return StatusCode(500, ModelState);
 
             }

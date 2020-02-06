@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace putavettoworkAPI.Models
 {
-    public class Trail
+    public class Jobs
     {
         [Key]
         public int Id { get; set; }
@@ -18,10 +18,10 @@ namespace putavettoworkAPI.Models
         public enum DifficultyType { Easy, Medium, Difficult, Expert }
 
         public DifficultyType Difficulty { get; set; }
-        public int NationalParkId { get; set; }
+        public int JobSearchId { get; set; }
 
-        [ForeignKey("NationalParkId")]
-        public JobSearch NationalPark { get; set; }
+        [ForeignKey("JobSearchId")]
+        public JobSearch JobSearch { get; set; }
 
         public DateTime DateCreated { get; set; }
     }

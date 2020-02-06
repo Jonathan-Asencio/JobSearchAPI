@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using static putavettoworkAPI.Models.Trail;
+using static putavettoworkAPI.Models.Jobs;
 
 namespace putavettoworkAPI.Models.Dtos
 {
-    public class TrailUpdateDto
+    public class JobUpdateDto
     {
         [Key]
         public int Id { get; set; }
