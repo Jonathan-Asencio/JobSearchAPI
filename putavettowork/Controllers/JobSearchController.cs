@@ -11,11 +11,11 @@ namespace putavettowork.Controllers
 {
     public class JobSearchController : Controller
     {
-        private readonly IJobSearchRepository _npRepo;
+        private readonly IJobSearchRepository _jsRepo;
 
-        public JobSearchController(IJobSearchRepository npRepo)
+        public JobSearchController(IJobSearchRepository jsRepo)
         {
-            _npRepo = npRepo;
+            _jsRepo = jsRepo;
         }
         public IActionResult Index()
         {
@@ -29,7 +29,7 @@ namespace putavettowork.Controllers
                 //true for insert or create
                 return View(obj);
             }
-            obj = await _npRepo.GetAsync(SD.NationalParkAPIPath,id.GetValueOrDefault());
+            obj = await _jsRepo.GetAsync(SD.JobSearchAPIPath,id.GetValueOrDefault());
             if (obj == null) 
             {
                 //update
@@ -38,9 +38,9 @@ namespace putavettowork.Controllers
             return View(obj);
         }
 
-        public async Task<IActionResult> GetAllNationalPark() 
+        public async Task<IActionResult> GetAllJobs() 
         {
-            return Json(new { data = await _npRepo.GetAllAsync(SD.NationalParkAPIPath) });
+            return Json(new { data = await _jsRepo.GetAllAsync(SD.JobSearchAPIPath) });
         }
 
         [HttpPost]
@@ -65,16 +65,16 @@ namespace putavettowork.Controllers
                 }
                 else 
                 {
-                    var objFromDb = await _npRepo.GetAsync(SD.NationalParkAPIPath, obj.Id);
+                    var objFromDb = await _jsRepo.GetAsync(SD.JobSearchAPIPath, obj.Id);
                     obj.Picture = objFromDb.Picture;
                 }
                 if (obj.Id == 0)
                 {
-                    await _npRepo.CreateAsync(SD.NationalParkAPIPath, obj);
+                    await _jsRepo.CreateAsync(SD.JobSearchAPIPath, obj);
                 }
                 else
                 {
-                    await _npRepo.UpdateAsync(SD.NationalParkAPIPath + obj.Id, obj);
+                    await _jsRepo.UpdateAsync(SD.JobSearchAPIPath + obj.Id, obj);
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -87,7 +87,7 @@ namespace putavettowork.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var status = await _npRepo.DeleteAsync(SD.NationalParkAPIPath, id);
+            var status = await _jsRepo.DeleteAsync(SD.JobSearchAPIPath, id);
             if (status)
             {
                 return Json(new { success = true, message = "Delete Successful"  });

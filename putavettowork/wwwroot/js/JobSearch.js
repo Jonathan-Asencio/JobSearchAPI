@@ -7,7 +7,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/nationalParks/GetAllNationalPark",
+            "url": "/JobSearch/GetAllJobs",
             "type": "Get",
             "datatype":"json"
         },
@@ -18,11 +18,11 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `<div class= "text-center">
-                                <a href="/nationalPark/Upsert/${data}" class= 'btn btn success text-white'
+                                <a href="/JobSearch/Upsert/${data}" class= 'btn btn success text-white'
                                     style= 'cursor:pointer;'> <i class='far fa-edit'></i></a>
                                     &nbsp;
                                     &nbsp;
-                                <a onclick=Delete("/nationalParks/Delete/${data}") class='btn btn-danger text-white'
+                                <a onclick=Delete("/JobSearch/Delete/${data}") class='btn btn-danger text-white'
                                     style='cursor:pointer;'> <i class='far fa-trash-alt'></i></a>
                                 </div>
                             `;

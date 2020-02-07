@@ -19,7 +19,7 @@ namespace putavettoworkAPI.Models.Dtos
         public double Distance { get; set; }
 
         public DifficultyType Difficulty { get; set; }
-        public int NationalParkId { get; set; }
+        public int JobSearchId { get; set; }
 
         
     }

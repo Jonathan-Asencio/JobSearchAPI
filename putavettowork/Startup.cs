@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using putavettowork.Repository;
 using putavettowork.Repository.iRepository;
 
 namespace putavettowork
@@ -24,8 +25,8 @@ namespace putavettowork
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IJobSearchRepository, IJobSearchRepository>();
-            services.AddScoped<ITrailRepository, ITrailRepository>();
+            services.AddScoped<IJobSearchRepository, JobSearchRepository>();
+            services.AddScoped<IJobsRepository, JobsRepository>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpClient();
         }
