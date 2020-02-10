@@ -14,9 +14,9 @@ namespace putavettoworkAPI.Mapper
         public Mappings()
         {
             CreateMap<JobSearch, JobSearchDto>().ReverseMap();
-            CreateMap<Jobs, JobDto>().ReverseMap();
-            CreateMap<Jobs, JobCreateDto>().ReverseMap();
-            CreateMap<Jobs, JobUpdateDto>().ReverseMap();
+            CreateMap<Job, JobDto>().ReverseMap();
+            CreateMap<Job, JobCreateDto>().ReverseMap();
+            CreateMap<Job, JobUpdateDto>().ReverseMap();
         }
     }
 }
