@@ -13,6 +13,7 @@ namespace putavettowork.Models
         public string Name { get; set; }
         public double Salary { get; set; }
         public string Description { get; set; }
+        [Required]
         public string Location { get; set; }
         public DateTime Created { get; set; }
         public byte[] Picture { get; set; }
