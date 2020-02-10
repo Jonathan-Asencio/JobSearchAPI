@@ -9,6 +9,6 @@ namespace putavettowork
     {
         public static string APIBAseUrl = "https://localhost:44305/";
         public static string JobSearchAPIPath = APIBAseUrl + "api/v1/JobSearch/";
-        public static string JobsAPIPath = APIBAseUrl + "api/v1/Jobs/";
+        public static string JobsAPIPath = APIBAseUrl + "api/v1/Job/";
     }
 }
