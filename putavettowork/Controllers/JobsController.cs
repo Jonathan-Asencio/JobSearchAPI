@@ -23,13 +23,13 @@ namespace putavettowork.Controllers
         }
         public IActionResult Index()
         {
-            return View(new Jobs() { });
+            return View(new Job() { });
         }
         public async Task<IActionResult> Upsert(int? id)
         {
             IEnumerable<JobSearch> jsList = await _jsRepo.GetAllAsync(SD.JobSearchAPIPath);
 
-            JobsVM objVM = new JobsVM()
+            JobVM objVM = new JobVM()
             {
                 JobSearchList = jsList.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {
                     Text = i.Name,
@@ -42,8 +42,8 @@ namespace putavettowork.Controllers
                 //true for insert or create
                 return View(objVM);
             }
-            objVM.Jobs = await _jobsRepo.GetAsync(SD.JobsAPIPath,id.GetValueOrDefault());
-            if (objVM.Jobs == null) 
+            objVM.Job = await _jobsRepo.GetAsync(SD.JobsAPIPath,id.GetValueOrDefault());
+            if (objVM.Job == null) 
             {
                 //update
                 return NotFound();
@@ -58,18 +58,18 @@ namespace putavettowork.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(JobsVM obj) 
+        public async Task<IActionResult> Upsert(JobVM obj) 
         {
             if (ModelState.IsValid) 
             {
 
-                if (obj.Jobs.Id == 0)
+                if (obj.Job.Id == 0)
                 {
-                    await _jobsRepo.CreateAsync(SD.JobsAPIPath, obj.Jobs);
+                    await _jobsRepo.CreateAsync(SD.JobsAPIPath, obj.Job);
                 }
                 else
                 {
-                    await _jobsRepo.UpdateAsync(SD.JobsAPIPath + obj.Jobs.Id, obj.Jobs);
+                    await _jobsRepo.UpdateAsync(SD.JobsAPIPath + obj.Job.Id, obj.Job);
                 }
                 return RedirectToAction(nameof(Index));
             }
