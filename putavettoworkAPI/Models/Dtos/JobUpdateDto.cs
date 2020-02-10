@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using static putavettoworkAPI.Models.Jobs;
+using static putavettoworkAPI.Models.Job;
 
 namespace putavettoworkAPI.Models.Dtos
 {
@@ -16,10 +16,8 @@ namespace putavettoworkAPI.Models.Dtos
 
         [Required]
         public string Name { get; set; }
-        public double Distance { get; set; }
-
-        public DifficultyType Difficulty { get; set; }
-        public int NationalParkId { get; set; }
+        public double Location { get; set; }
+        public int JobSearchId { get; set; }
 
         
     }
