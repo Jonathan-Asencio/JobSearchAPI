@@ -8,14 +8,14 @@ namespace putavettoworkAPI.Repository.iRepository
 {
     public interface iJobsRepository
     {
-        ICollection<Jobs> GetJobs();
-        ICollection<Jobs> GetJobsInJobSearch(int jsId);
-        Jobs GetJob(int JobId);
+        ICollection<Job> GetJobs();
+        ICollection<Job> GetJobsInJobSearch(int jsId);
+        Job GetJob(int JobId);
         bool JobExists(string name);
         bool JobExists(int id);
-        bool CreateJob(Jobs Job);
-        bool UpdateJob(Jobs Job);
-        bool DeleteJob(Jobs Job);
+        bool CreateJob(Job Job);
+        bool UpdateJob(Job Job);
+        bool DeleteJob(Job Job);
         bool Save();
     }
 }

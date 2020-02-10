@@ -18,24 +18,24 @@ namespace putavettoworkAPI.Repository
         {
             _db = db;
         }
-        public bool CreateJob(Jobs Job)
+        public bool CreateJob(Job Job)
         {
             _db.Jobs.Add(Job);
             return Save();
         }
 
-        public bool DeleteJob(Jobs Job)
+        public bool DeleteJob(Job Job)
         {
             _db.Jobs.Remove(Job);
             return Save();
         }
 
-        public Jobs GetJob(int JobId)
+        public Job GetJob(int JobId)
         {
             return _db.Jobs.Include(c => c.JobSearch).FirstOrDefault(a => a.Id ==JobId);
         }
 
-        public ICollection<Jobs> GetJobs()
+        public ICollection<Job> GetJobs()
         {
             return _db.Jobs.Include(c => c.JobSearch).OrderBy(a => a.Name).ToList();
         }
@@ -56,13 +56,13 @@ namespace putavettoworkAPI.Repository
             return _db.SaveChanges() >= 0 ? true : false;
         }
 
-        public bool UpdateJob(Jobs Job)
+        public bool UpdateJob(Job Job)
         {
             _db.Jobs.Update(Job);
             return Save();
         }
 
-        public ICollection<Jobs> GetJobsInJobSearch(int jsId)
+        public ICollection<Job> GetJobsInJobSearch(int jsId)
         {
             return _db.Jobs.Include(c=>c.JobSearch).Where(c=>c.JobSearchId == jsId).ToList();
         }
