@@ -15,6 +15,6 @@ namespace putavettoworkAPI.Data
         }
 
         public DbSet<JobSearch> JobSearch { get; set; }
-        public DbSet<Jobs> Jobs { get; set; }
+        public DbSet<Job> Jobs { get; set; }
     }
 }
