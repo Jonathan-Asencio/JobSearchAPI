@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace putavettowork.Repository.iRepository
 {
-   public interface IJobsRepository : IRepository<Jobs>
+   public interface IJobsRepository : IRepository<Job>
     {
     }
 }
