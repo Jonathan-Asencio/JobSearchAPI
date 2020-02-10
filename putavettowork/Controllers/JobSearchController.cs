@@ -38,7 +38,7 @@ namespace putavettowork.Controllers
             return View(obj);
         }
 
-        public async Task<IActionResult> GetAllJobs() 
+        public async Task<IActionResult> GetAllJobSearch() 
         {
             return Json(new { data = await _jsRepo.GetAllAsync(SD.JobSearchAPIPath) });
         }
