@@ -105,11 +105,11 @@ namespace putavettoworkAPI.Controllers
 
             if (_jsRepo.JobExists(JobDto.Name)) 
             {
-                ModelState.AddModelError("", "trail Exists!");
+                ModelState.AddModelError("", "job Exists!");
                 return StatusCode(404, ModelState);
             }
 
-            var JobObj = _mapper.Map<Jobs>(JobDto);
+            var JobObj = _mapper.Map<Job>(JobDto);
 
             if (!_jsRepo.CreateJob(JobObj)) 
             {
@@ -131,7 +131,7 @@ namespace putavettoworkAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var JobObj = _mapper.Map<Jobs>(JobDto);
+            var JobObj = _mapper.Map<Job>(JobDto);
 
             if (!_jsRepo.UpdateJob(JobObj))
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using putavettoworkAPI.Dtos;
@@ -11,57 +12,65 @@ using putavettoworkAPI.Repository.iRepository;
 
 namespace putavettoworkAPI.Controllers
 {
-    [Route("api/v/{version:apiVersion}/jobSearch")]
+    [Route("api/v{version:apiVersion}/jobsearch")]
     //[Route("api/[controller]")]
     [ApiController]
-    //[ApiExplorerSettings(GroupName = "putavettoworkOpenAPISpec")]
+    //[ApiExplorerSettings(GroupName = "putavettoworkOpenAPISpecNP")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class JobSearchV2Controller : ControllerBase
+    public class JobSearchController : ControllerBase
     {
-        private iJobSearchRepository _jsRepo;
+        private readonly iJobSearchRepository _jsRepo;
         private readonly IMapper _mapper;
 
-        public JobSearchV2Controller(iJobSearchRepository jsRepo, IMapper mapper)
+        public JobSearchController(iJobSearchRepository jsRepo, IMapper mapper)
         {
             _jsRepo = jsRepo;
             _mapper = mapper;
         }
 
+
+        /// <summary>
+        /// Get list of available jobs.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<JobSearchDto>))]
-        [ProducesResponseType(400)]
-        public IActionResult GetJobSearchs() 
+        public IActionResult GetJobSearch()
         {
             var objList = _jsRepo.GetJobSearch();
-
             var objDto = new List<JobSearchDto>();
-
-            foreach(var obj in objList)
+            foreach (var obj in objList)
             {
                 objDto.Add(_mapper.Map<JobSearchDto>(obj));
             }
-
             return Ok(objDto);
         }
 
         /// <summary>
-        /// Get list of jobs
+        /// Get individual Jobs
         /// </summary>
-        /// <param name="jobSearchId"> The ID of the Job </param>
+        /// <param name="jobSearchId"> The Id of the job </param>
         /// <returns></returns>
-        //get request with required arguments
-        [HttpGet("{jobSearchId:int}", Name = "GetJobSearch") ]
+        [HttpGet("{jobSearchId:int}", Name = "GetJobSearch")]
         [ProducesResponseType(200, Type = typeof(JobSearchDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(404)]
+        [Authorize]
         [ProducesDefaultResponseType]
-        public IActionResult GetJobSearch(int jobSearchId) 
+        public IActionResult GetJobSearch(int jobSearchId)
         {
             var obj = _jsRepo.GetJobSearch(jobSearchId);
-            if (obj == null) 
+            if (obj == null)
             {
                 return NotFound();
             }
             var objDto = _mapper.Map<JobSearchDto>(obj);
+            //var objDto = new JobSearchDto()
+            //{
+            //    Created = obj.Created,
+            //    Id = obj.Id,
+            //    Name = obj.Name,
+            //    State = obj.State,
+            //};
             return Ok(objDto);
 
         }
@@ -71,35 +80,31 @@ namespace putavettoworkAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateJobSearch([FromBody] JobSearchDto jobSearchDto) 
+        public IActionResult CreateJobSearch([FromBody] JobSearchDto jobSearchDto)
         {
-            if (jobSearchDto == null) 
+            if (jobSearchDto == null)
             {
                 return BadRequest(ModelState);
             }
-
-            if (_jsRepo.JobSearchExists(jobSearchDto.Name)) 
+            if (_jsRepo.JobSearchExists(jobSearchDto.Name))
             {
                 ModelState.AddModelError("", "Job Exists!");
                 return StatusCode(404, ModelState);
             }
-
             var jobSearchObj = _mapper.Map<JobSearch>(jobSearchDto);
-
-            if (!_jsRepo.CreateJobSearch(jobSearchObj)) 
+            if (!_jsRepo.CreateJobSearch(jobSearchObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when saving the record {jobSearchObj.Name}");
                 return StatusCode(500, ModelState);
-
             }
-            return CreatedAtRoute("GetJobSearch", new {jobSearchId = jobSearchObj.Id, jobSearchObj});
+            return CreatedAtRoute("GetJobSearch", new { jobSearchId = jobSearchObj.Id }, jobSearchObj);
         }
 
         [HttpPatch("{jobSearchId:int}", Name = "UpdateJobSearch")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdateJobSearch(int jobSearchId, [FromBody] JobSearchDto jobSearchDto) 
+        public IActionResult UpdateJobSearch(int jobSearchId, [FromBody] JobSearchDto jobSearchDto)
         {
             if (jobSearchDto == null || jobSearchId != jobSearchDto.Id)
             {
@@ -107,24 +112,25 @@ namespace putavettoworkAPI.Controllers
             }
 
             var jobSearchObj = _mapper.Map<JobSearch>(jobSearchDto);
-
             if (!_jsRepo.UpdateJobSearch(jobSearchObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when updating the record {jobSearchObj.Name}");
                 return StatusCode(500, ModelState);
-
             }
-            return NoContent();  
+
+            return NoContent();
+
         }
+
 
         [HttpDelete("{jobSearchId:int}", Name = "DeleteJobSearch")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DeleteJobSearch(int jobSearchId)
+        public IActionResult DeletejobSearch(int jobSearchId)
         {
-            if (_jsRepo.JobSearchExists(jobSearchId))
+            if (!_jsRepo.JobSearchExists(jobSearchId))
             {
                 return NotFound();
             }
@@ -134,9 +140,10 @@ namespace putavettoworkAPI.Controllers
             {
                 ModelState.AddModelError("", $"Something went wrong when deleting the record {jobSearchObj.Name}");
                 return StatusCode(500, ModelState);
-
             }
+
             return NoContent();
+
         }
 
     }

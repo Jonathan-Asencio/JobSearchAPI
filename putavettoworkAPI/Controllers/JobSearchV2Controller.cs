@@ -17,12 +17,12 @@ namespace putavettoworkAPI.Controllers
     //[Route("api/[controller]")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class JobSearchController : ControllerBase
+    public class JobSearchV2Controller : ControllerBase
     {
         private iJobSearchRepository _jsRepo;
         private readonly IMapper _mapper;
 
-        public JobSearchController(iJobSearchRepository jsRepo, IMapper mapper)
+        public JobSearchV2Controller(iJobSearchRepository jsRepo, IMapper mapper)
         {
             _jsRepo = jsRepo;
             _mapper = mapper;
